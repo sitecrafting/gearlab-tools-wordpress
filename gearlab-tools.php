@@ -122,13 +122,8 @@ if (class_exists(WP_CLI::class)) {
 // Inject Timber-specific specializations.
 add_action('plugins_loaded', function() {
   if (class_exists(Timber::class)) {
-    // Timber is running. Extend it!
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->addFunction(new Twig_SimpleFunction(
-        'gearlab_paginate_links',
-        GearLab\paginate_links::class
-      ));
-
+    add_filter('timber/twig', function($twig) {
+      $twig->addFunction(new Twig\TwigFunction('gearlab_paginate_links', GearLab\paginate_links::class));
       return $twig;
     });
 
